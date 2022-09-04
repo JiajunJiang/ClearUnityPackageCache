@@ -3,6 +3,8 @@
 
 使用方法 下载Release里的 ClearUnityPackageCache.exe 双击使用
 
+![image](https://github.com/JiajunJiang/ClearUnityPackageCache/blob/main/example.jpg)
+
 ### 可选参数说明   
 --keep number 保留最新的多少个版本  
 --skip 1 跳过统计Cache大小
