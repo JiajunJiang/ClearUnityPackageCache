@@ -10,6 +10,7 @@ npm_dir = path.expandvars(r'%LOCALAPPDATA%\Unity\cache\npm')
 packages_dir = path.expandvars(r'%LOCALAPPDATA%\Unity\cache\packages')
 
 keep_value = 3
+skip_calculate_size = False
 
 
 def clear_npm(path):
@@ -73,7 +74,7 @@ def get_folder_size(path):
 
 def main(argv):
     try:
-        options, args = getopt.getopt(argv, "k:", ["help", "keep="])
+        options, args = getopt.getopt(argv, "k:s:", ["skip=", "keep="])
     except getopt.GetoptError:
         print("options error")
         sys.exit()
@@ -87,19 +88,23 @@ def main(argv):
                 print("{0} is not digit".format(value))
                 sys.exit()
 
-            print("Keep The Latest {0} Version".format(value))
+        if option in ("-s", "--skip"):
+            global skip_calculate_size
+            skip_calculate_size = True
 
-    print("Start calculate the UnityCache size, may take some minutes")
-
-    print("Before Unity Cache Size = %.2f GB" % (get_folder_size(cache_dir) / 1024 / 1024 / 1024))
+    if not skip_calculate_size:
+        print("Start calculate the UnityCache size, may take some minutes")
+        print("Total Unity Cache Size = %.2f GB" % (get_folder_size(cache_dir) / 1024 / 1024 / 1024))
 
     print("Start Clear Unity Cache")
 
     clear_npm(npm_dir)
 
     clear_packages(packages_dir)
+    print("End Clear Unity Cache")
 
-    print("Last Unity Cache Size = %.2f GB" % (get_folder_size(cache_dir) / 1024 / 1024 / 1024))
+    if not skip_calculate_size:
+        print("Remain Unity Cache Size = %.2f GB" % (get_folder_size(cache_dir) / 1024 / 1024 / 1024))
 
 
 if __name__ == '__main__':
